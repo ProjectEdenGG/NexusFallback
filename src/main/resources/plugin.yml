@@ -1,0 +1,11 @@
+name: HangingBreakDeny
+main: gg.projecteden.hangingbreakdeny.HangingBreakDeny
+author: Pugabyte
+version: ${project.version}
+api-version: 1.16
+load: STARTUP
+loadbefore:
+  - Nexus
+depend:
+  - WorldGuard
+  - WorldEdit
