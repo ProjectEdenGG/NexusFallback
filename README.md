@@ -1,2 +1,2 @@
 # HangingBreakDeny
-/rg flag <region> hanging-break deny
+/rg flag \<region\> hanging-break deny
