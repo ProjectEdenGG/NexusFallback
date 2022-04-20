@@ -1,4 +1,4 @@
-package gg.projecteden.hangingbreakdeny;
+package gg.projecteden.nexus.fallback.features;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.util.Location;
@@ -11,18 +11,18 @@ import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.SimpleFlagRegistry;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import gg.projecteden.nexus.fallback.Feature;
+import gg.projecteden.nexus.fallback.NexusFallback;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
-import org.bukkit.plugin.java.JavaPlugin;
 
-public class HangingBreakDeny extends JavaPlugin implements Listener {
+public class HangingBreakDeny implements Feature {
 
 	public static WorldGuardPlugin plugin;
 	public static SimpleFlagRegistry registry;
@@ -34,7 +34,7 @@ public class HangingBreakDeny extends JavaPlugin implements Listener {
 		registry = (SimpleFlagRegistry) WorldGuard.getInstance().getFlagRegistry();
 
 		if (plugin == null || registry == null) {
-			getLogger().warning("Could not find WorldGuard, aborting registry");
+			NexusFallback.getInstance().getLogger().warning("Could not find WorldGuard, aborting registry");
 			return;
 		}
 
@@ -49,11 +49,6 @@ public class HangingBreakDeny extends JavaPlugin implements Listener {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-	}
-
-	@Override
-	public void onEnable() {
-		getServer().getPluginManager().registerEvents(this, this);
 	}
 
 	@EventHandler

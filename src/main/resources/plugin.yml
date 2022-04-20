@@ -1,8 +1,8 @@
-name: HangingBreakDeny
-main: gg.projecteden.hangingbreakdeny.HangingBreakDeny
-author: Pugabyte
+name: NexusFallback
+main: gg.projecteden.nexus.fallback.NexusFallback
+author: GriffinCodes
 version: ${project.version}
-api-version: 1.16
+api-version: 1.17
 load: STARTUP
 loadbefore:
   - Nexus
