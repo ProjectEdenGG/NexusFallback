@@ -1,7 +1,7 @@
 package gg.projecteden.nexus.fallback;
 
-import gg.projecteden.nexus.fallback.features.HangingBreakDeny;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.objenesis.ObjenesisStd;
@@ -10,7 +10,6 @@ import org.reflections.Reflections;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class NexusFallback extends JavaPlugin implements Listener {
 
@@ -59,6 +58,10 @@ public class NexusFallback extends JavaPlugin implements Listener {
 
 	public static void registerListener(Listener listener) {
 		instance.getServer().getPluginManager().registerEvents(listener, NexusFallback.getInstance());
+	}
+
+	public static boolean isNexusEnabled(){
+		return Bukkit.getServer().getPluginManager().isPluginEnabled("Nexus");
 	}
 
 }
