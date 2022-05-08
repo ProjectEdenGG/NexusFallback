@@ -17,12 +17,16 @@ import org.bukkit.event.block.NotePlayEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
+import java.util.Set;
+
 import static gg.projecteden.nexus.fallback.NexusFallback.isNexusEnabled;
 
 public class CustomBlocks implements Feature {
 
+	private static final Set<Material> handledMaterials = Set.of(Material.NOTE_BLOCK, Material.TRIPWIRE, Material.STRING);
+
 	private void error(Player player){
-		player.sendMessage("Note Block interactions are being prevented while Nexus is disabled");
+		player.sendMessage("Interactions with certain blocks are being prevented while Nexus is disabled");
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -32,7 +36,7 @@ public class CustomBlocks implements Feature {
 
 		Block eventBlock = event.getBlock();
 		Material material = eventBlock.getType();
-		if (material == Material.NOTE_BLOCK) {
+		if(handledMaterials.contains(material)) {
 			event.setCancelled(true);
 			eventBlock.getState().update(true, false);
 		}
@@ -66,7 +70,7 @@ public class CustomBlocks implements Feature {
 			return;
 
 		Material material = clickedBlock.getType();
-		if(material.equals(Material.NOTE_BLOCK)) {
+		if(handledMaterials.contains(material)) {
 			event.setCancelled(true);
 			error(event.getPlayer());
 		}
@@ -77,7 +81,7 @@ public class CustomBlocks implements Feature {
 		if(isNexusEnabled())
 			return;
 
-		if(event.getBlock().getType().equals(Material.NOTE_BLOCK)) {
+		if(handledMaterials.contains(event.getBlock().getType())) {
 			event.setCancelled(true);
 			error(event.getPlayer());
 		}
@@ -88,7 +92,7 @@ public class CustomBlocks implements Feature {
 		if(isNexusEnabled())
 			return;
 
-		if(event.getBlock().getType().equals(Material.NOTE_BLOCK)) {
+		if(handledMaterials.contains(event.getBlock().getType())) {
 			event.setCancelled(true);
 			error(event.getPlayer());
 		}
@@ -100,7 +104,7 @@ public class CustomBlocks implements Feature {
 			return;
 
 		for (Block block : event.getBlocks()) {
-			if(block.getType().equals(Material.NOTE_BLOCK)) {
+			if(handledMaterials.contains(block.getType())) {
 				event.setCancelled(true);
 				break;
 			}
@@ -113,7 +117,7 @@ public class CustomBlocks implements Feature {
 			return;
 
 		for (Block block : event.getBlocks()) {
-			if(block.getType().equals(Material.NOTE_BLOCK)) {
+			if(handledMaterials.contains(block.getType())) {
 				event.setCancelled(true);
 				break;
 			}
