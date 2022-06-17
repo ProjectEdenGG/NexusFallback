@@ -42,10 +42,10 @@ public class CustomBlocks implements Feature {
 		}
 
 		Block aboveBlock = eventBlock.getRelative(BlockFace.UP);
-		if (aboveBlock.getType().equals(Material.NOTE_BLOCK)) {
+		if (handledMaterials.contains(aboveBlock.getType())) {
 			event.setCancelled(true);
 
-			while (aboveBlock.getType() == Material.NOTE_BLOCK) {
+			while (handledMaterials.contains(aboveBlock.getType())) {
 				// Leave this as (true, true) -> (true, false) will crash the server
 				aboveBlock.getState().update(true, true);
 
