@@ -1,82 +1,28 @@
 package gg.projecteden.nexus.fallback.features;
 
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.util.Location;
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.domains.Association;
-import com.sk89q.worldguard.protection.association.Associables;
-import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.flags.StateFlag.State;
-import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
-import com.sk89q.worldguard.protection.flags.registry.SimpleFlagRegistry;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
 import gg.projecteden.nexus.fallback.Feature;
-import gg.projecteden.nexus.fallback.NexusFallback;
-import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
-import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
+
+import static gg.projecteden.nexus.fallback.NexusFallback.isNexusEnabled;
 
 public class HangingBreakDeny implements Feature {
 
-	public static WorldGuardPlugin plugin;
-	public static SimpleFlagRegistry registry;
-	public static StateFlag flag;
-
-	@Override
-	public void onLoad() {
-		plugin = (WorldGuardPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-		registry = (SimpleFlagRegistry) WorldGuard.getInstance().getFlagRegistry();
-
-		if (plugin == null || registry == null) {
-			NexusFallback.getInstance().getLogger().warning("Could not find WorldGuard, aborting registry");
+	@EventHandler
+	public void on(HangingBreakEvent event) {
+		if (isNexusEnabled())
 			return;
-		}
 
-		flag = new StateFlag("hanging-break", false);
-
-		try {
-			try {
-				registry.register(flag);
-			} catch (FlagConflictException duplicate) {
-				flag = (StateFlag) registry.get(flag.getName());
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+		event.setCancelled(true);
 	}
 
 	@EventHandler
-	public void onItemFrameBreak(HangingBreakEvent event) {
-		if (RemoveCause.ENTITY.equals(event.getCause()))
+	public void on(HangingBreakByEntityEvent event) {
+		if (isNexusEnabled())
 			return;
 
-		if (query(event.getEntity().getLocation(), flag) == State.DENY)
-			event.setCancelled(true);
-	}
-
-	@EventHandler
-	public void onItemFrameBreak(HangingBreakByEntityEvent event) {
-		Entity remover = event.getRemover();
-		if (remover instanceof Player)
-			return;
-
-		if (query(event.getEntity().getLocation(), flag) == State.DENY)
-			event.setCancelled(true);
-	}
-
-	public static State query(org.bukkit.Location location, StateFlag... flags) {
-		Validate.notNull(location, "Location cannot be null");
-		Validate.notNull(flags, "Flags cannot be null");
-
-		Location loc = BukkitAdapter.adapt(location);
-		RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-		return container.createQuery().queryState(loc, Associables.constant(Association.OWNER), flags);
+		event.setCancelled(true);
 	}
 
 }
