@@ -32,6 +32,27 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<relocations>
+								<relocation>
+									<pattern>gg.projecteden.api.common</pattern>
+									<shadedPattern>fallback.gg.projecteden.api.common</shadedPattern>
+								</relocation>
+							</relocations>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
@@ -78,17 +99,17 @@
 			<version>1.18.22</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- Reflections -->
-		<dependency>
-			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
-			<version>0.10.2</version>
-		</dependency>
 		<!-- Objenesis -->
 		<dependency>
 			<groupId>org.objenesis</groupId>
 			<artifactId>objenesis</artifactId>
 			<version>3.2</version>
+		</dependency>
+		<!-- Eden API -->
+		<dependency>
+			<groupId>gg.projecteden</groupId>
+			<artifactId>eden-common</artifactId>
+			<version>2.2.7-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

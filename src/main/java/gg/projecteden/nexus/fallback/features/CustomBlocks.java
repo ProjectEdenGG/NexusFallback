@@ -25,18 +25,18 @@ public class CustomBlocks implements Feature {
 
 	private static final Set<Material> handledMaterials = Set.of(Material.NOTE_BLOCK, Material.TRIPWIRE, Material.STRING);
 
-	private void error(Player player){
+	private void error(Player player) {
 		player.sendMessage("Interactions with certain blocks are being prevented while Nexus is disabled");
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void on(BlockPhysicsEvent event) {
-		if(isNexusEnabled())
+		if (isNexusEnabled())
 			return;
 
 		Block eventBlock = event.getBlock();
 		Material material = eventBlock.getType();
-		if(handledMaterials.contains(material)) {
+		if (handledMaterials.contains(material)) {
 			event.setCancelled(true);
 			eventBlock.getState().update(true, false);
 		}
@@ -56,7 +56,7 @@ public class CustomBlocks implements Feature {
 
 	@EventHandler
 	public void on(PlayerInteractEvent event) {
-		if(isNexusEnabled())
+		if (isNexusEnabled())
 			return;
 
 		if (event.useInteractedBlock() == Result.DENY || event.useItemInHand() == Result.DENY)
@@ -66,11 +66,11 @@ public class CustomBlocks implements Feature {
 			return;
 
 		Block clickedBlock = event.getClickedBlock();
-		if(clickedBlock == null)
+		if (clickedBlock == null)
 			return;
 
 		Material material = clickedBlock.getType();
-		if(handledMaterials.contains(material)) {
+		if (handledMaterials.contains(material)) {
 			event.setCancelled(true);
 			error(event.getPlayer());
 		}
@@ -78,10 +78,10 @@ public class CustomBlocks implements Feature {
 
 	@EventHandler
 	public void on(BlockBreakEvent event) {
-		if(isNexusEnabled())
+		if (isNexusEnabled())
 			return;
 
-		if(handledMaterials.contains(event.getBlock().getType())) {
+		if (handledMaterials.contains(event.getBlock().getType())) {
 			event.setCancelled(true);
 			error(event.getPlayer());
 		}
@@ -89,10 +89,10 @@ public class CustomBlocks implements Feature {
 
 	@EventHandler
 	public void on(BlockPlaceEvent event) {
-		if(isNexusEnabled())
+		if (isNexusEnabled())
 			return;
 
-		if(handledMaterials.contains(event.getBlock().getType())) {
+		if (handledMaterials.contains(event.getBlock().getType())) {
 			event.setCancelled(true);
 			error(event.getPlayer());
 		}
@@ -100,11 +100,11 @@ public class CustomBlocks implements Feature {
 
 	@EventHandler
 	public void on(BlockPistonExtendEvent event) {
-		if(isNexusEnabled())
+		if (isNexusEnabled())
 			return;
 
 		for (Block block : event.getBlocks()) {
-			if(handledMaterials.contains(block.getType())) {
+			if (handledMaterials.contains(block.getType())) {
 				event.setCancelled(true);
 				break;
 			}
@@ -113,11 +113,11 @@ public class CustomBlocks implements Feature {
 
 	@EventHandler
 	public void on(BlockPistonRetractEvent event) {
-		if(isNexusEnabled())
+		if (isNexusEnabled())
 			return;
 
 		for (Block block : event.getBlocks()) {
-			if(handledMaterials.contains(block.getType())) {
+			if (handledMaterials.contains(block.getType())) {
 				event.setCancelled(true);
 				break;
 			}
@@ -126,9 +126,10 @@ public class CustomBlocks implements Feature {
 
 	@EventHandler
 	public void on(NotePlayEvent event) {
-		if(isNexusEnabled())
+		if (isNexusEnabled())
 			return;
 
 		event.setCancelled(true);
 	}
+
 }
