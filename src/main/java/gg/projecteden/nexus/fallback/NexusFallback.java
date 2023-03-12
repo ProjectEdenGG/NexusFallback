@@ -69,6 +69,7 @@ public class NexusFallback extends JavaPlugin implements Listener {
 		for (Feature feature : registered.values()) {
 			feature.onEnable();
 			registerListener(feature);
+			getLogger().info("Registered feature " + feature.getClass().getSimpleName());
 		}
 	}
 
