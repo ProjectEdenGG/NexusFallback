@@ -19,7 +19,7 @@ import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.Set;
 
-import static gg.projecteden.nexus.fallback.NexusFallback.isNexusEnabled;
+import static gg.projecteden.nexus.fallback.NexusFallback.handledByNexus;
 
 public class CustomBlocks implements Feature {
 
@@ -31,7 +31,7 @@ public class CustomBlocks implements Feature {
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void on(BlockPhysicsEvent event) {
-		if (isNexusEnabled())
+		if (handledByNexus(event))
 			return;
 
 		Block eventBlock = event.getBlock();
@@ -56,7 +56,7 @@ public class CustomBlocks implements Feature {
 
 	@EventHandler
 	public void on(PlayerInteractEvent event) {
-		if (isNexusEnabled())
+		if (handledByNexus(event))
 			return;
 
 		if (event.useInteractedBlock() == Result.DENY || event.useItemInHand() == Result.DENY)
@@ -78,7 +78,7 @@ public class CustomBlocks implements Feature {
 
 	@EventHandler
 	public void on(BlockBreakEvent event) {
-		if (isNexusEnabled())
+		if (handledByNexus(event))
 			return;
 
 		if (handledMaterials.contains(event.getBlock().getType())) {
@@ -89,7 +89,7 @@ public class CustomBlocks implements Feature {
 
 	@EventHandler
 	public void on(BlockPlaceEvent event) {
-		if (isNexusEnabled())
+		if (handledByNexus(event))
 			return;
 
 		if (handledMaterials.contains(event.getBlock().getType())) {
@@ -100,7 +100,7 @@ public class CustomBlocks implements Feature {
 
 	@EventHandler
 	public void on(BlockPistonExtendEvent event) {
-		if (isNexusEnabled())
+		if (handledByNexus(event))
 			return;
 
 		for (Block block : event.getBlocks()) {
@@ -113,7 +113,7 @@ public class CustomBlocks implements Feature {
 
 	@EventHandler
 	public void on(BlockPistonRetractEvent event) {
-		if (isNexusEnabled())
+		if (handledByNexus(event))
 			return;
 
 		for (Block block : event.getBlocks()) {
@@ -126,7 +126,7 @@ public class CustomBlocks implements Feature {
 
 	@EventHandler
 	public void on(NotePlayEvent event) {
-		if (isNexusEnabled())
+		if (handledByNexus(event))
 			return;
 
 		event.setCancelled(true);

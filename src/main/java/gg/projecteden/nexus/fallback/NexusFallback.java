@@ -4,12 +4,13 @@ import gg.projecteden.api.common.EdenAPI;
 import gg.projecteden.api.common.utils.Env;
 import gg.projecteden.api.common.utils.ReflectionUtils;
 import lombok.Getter;
-import org.bukkit.Bukkit;
+import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.objenesis.ObjenesisStd;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -83,8 +84,8 @@ public class NexusFallback extends JavaPlugin implements Listener {
 		instance.getServer().getPluginManager().registerEvents(listener, NexusFallback.getInstance());
 	}
 
-	public static boolean isNexusEnabled() {
-		return Bukkit.getServer().getPluginManager().isPluginEnabled("Nexus");
+	public static boolean handledByNexus(Event event) {
+		return Arrays.stream(event.getHandlers().getRegisteredListeners()).anyMatch(listener -> "Nexus".equals(listener.getPlugin().getName()));
 	}
 
 }
