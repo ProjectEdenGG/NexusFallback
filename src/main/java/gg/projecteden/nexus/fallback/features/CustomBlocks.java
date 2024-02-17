@@ -1,6 +1,7 @@
 package gg.projecteden.nexus.fallback.features;
 
 import gg.projecteden.nexus.fallback.Feature;
+import gg.projecteden.parchment.event.block.CustomBlockUpdateEvent;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -27,6 +28,14 @@ public class CustomBlocks implements Feature {
 
 	private void error(Player player) {
 		player.sendMessage("Interactions with certain blocks are being prevented while Nexus is disabled");
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void on(CustomBlockUpdateEvent event) {
+		if (handledByNexus(event))
+			return;
+
+		event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
