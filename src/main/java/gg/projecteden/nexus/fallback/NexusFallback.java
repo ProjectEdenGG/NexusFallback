@@ -3,6 +3,7 @@ package gg.projecteden.nexus.fallback;
 import gg.projecteden.api.common.EdenAPI;
 import gg.projecteden.api.common.utils.Env;
 import gg.projecteden.api.common.utils.ReflectionUtils;
+import gg.projecteden.api.common.utils.Utils;
 import lombok.Getter;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
@@ -42,25 +43,38 @@ public class NexusFallback extends JavaPlugin implements Listener {
 	}
 
 	public static class API extends EdenAPI {
+		Env env;
 
 		public API() {
 			instance = this;
+			env = _getEnv();
 		}
 
 		@Override
 		public Env getEnv() {
-			return Env.PROD;
+			return env;
 		}
 
 		@Override
 		public void shutdown() {}
 
+		public static Env _getEnv() {
+			String env = getInstance().getConfig().getString("env", Env.PROD.name()).toUpperCase();
+			try {
+				return Env.valueOf(env);
+			} catch (IllegalArgumentException ex) {
+				return Env.PROD;
+			}
+		}
+
 	}
 
 	@Override
 	public void onLoad() {
-		for (Class<? extends Feature> clazz : ReflectionUtils.subTypesOf(Feature.class, getClass().getPackageName()))
-			registered.put(clazz, singletonOf(clazz));
+		for (Class<? extends Feature> clazz : ReflectionUtils.subTypesOf(Feature.class, getClass().getPackageName())) {
+			if(Utils.canEnable(clazz))
+				registered.put(clazz, singletonOf(clazz));
+		}
 
 		registered.values().forEach(Feature::onLoad);
 	}

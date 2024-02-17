@@ -1,5 +1,7 @@
 package gg.projecteden.nexus.fallback.features;
 
+import gg.projecteden.api.common.annotations.Environments;
+import gg.projecteden.api.common.utils.Env;
 import gg.projecteden.nexus.fallback.Feature;
 import gg.projecteden.parchment.event.block.CustomBlockUpdateEvent;
 import org.bukkit.Material;
@@ -22,6 +24,7 @@ import java.util.Set;
 
 import static gg.projecteden.nexus.fallback.NexusFallback.handledByNexus;
 
+@Environments(Env.TEST)
 public class CustomBlocks implements Feature {
 
 	private static final Set<Material> handledMaterials = Set.of(Material.NOTE_BLOCK, Material.TRIPWIRE, Material.STRING);
