@@ -102,4 +102,8 @@ public class NexusFallback extends JavaPlugin implements Listener {
 		return Arrays.stream(event.getHandlers().getRegisteredListeners()).anyMatch(listener -> "Nexus".equals(listener.getPlugin().getName()));
 	}
 
+	public static boolean handledByNexus(Event event, String className) {
+		return Arrays.stream(event.getHandlers().getRegisteredListeners()).anyMatch(listener -> listener.getListener().getClass().getSimpleName().endsWith(className));
+	}
+
 }
