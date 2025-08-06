@@ -5,13 +5,20 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.persistence.PersistentDataType;
 
 import static gg.projecteden.nexus.fallback.NexusFallback.handledByNexus;
 
-public class HangingBreakDeny implements Feature {
+public class EntityDamage implements Feature {
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void on(EntityDamageEvent event) {
+		if (!handledByNexus(event))
+			event.setCancelled(true);
+	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void on(HangingBreakEvent event) {
